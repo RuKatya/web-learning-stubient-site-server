@@ -1,5 +1,3 @@
-// const connection = require('./utils/connectionDB');
-// const { connection } = require('./utils/connectionDB');
 const { connectionToENV } = require('./utils/connectionToENV');
 const express = require('express')
 const app = express()
