@@ -4,7 +4,7 @@ const app = express()
 const PORT = process.env.PORT || 8080;
 
 connectionToENV();
-global.db = require('./utils/connectionDB');
+// global.db = require('./utils/connectionDB');
 
 
 app.listen(PORT, () => {
