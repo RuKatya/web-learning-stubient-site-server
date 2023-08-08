@@ -26,7 +26,8 @@ app.use(cors(CORS_OPTIONS));
 connectionToENV();
 global.db = require('./utils/connectionDB');
 
-app.use('/auth', require('./routers/auth/auth'));
+app.use('/auth', require('./routers/auth/auth.router'));
+app.use('/user', require('./routers/user/user.router'));
 
 app.listen(PORT, () => {
     console.log(`http://${HOST}:${PORT}`);
