@@ -4,7 +4,7 @@ const { httpCodes } = require('../../utils/httpStatusCode');
 const {
     registValidation,
     loginValidation,
-} = require('../../validation/authValidation');
+} = require('../../validation/auth.validation');
 
 exports.regUser = async (req, res) => {
     try {
@@ -81,7 +81,6 @@ exports.loginUser = async (req, res) => {
                     .send({ continueWork: false, message: 'User not exist' });
             }
 
-            console.log(user);
             const comparePass = await bcrypt.compare(
                 password,
                 user[0].UserPassword
