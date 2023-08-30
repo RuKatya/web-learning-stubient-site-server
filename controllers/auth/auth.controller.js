@@ -52,7 +52,7 @@ exports.regUser = async (req, res) => {
 exports.loginUser = async (req, res) => {
     try {
         const { email, password } = req.body;
-
+        console.log(req.user)
         const { error } = loginValidation.validate({ email, password });
 
         if (error) {
@@ -64,7 +64,7 @@ exports.loginUser = async (req, res) => {
                 .send({ continueWork: false, message: error.message });
         }
 
-        const searchUser = `SELECT UserName, UserRole, UserPassword FROM users WHERE Email="${email}"`;
+        const searchUser = `SELECT UserName, UserRole, UserPassword, UserID FROM users WHERE Email="${email}"`;
 
         db.query(searchUser, async (err, user) => {
             if (err) {
@@ -96,10 +96,8 @@ exports.loginUser = async (req, res) => {
                     });
             }
 
-            const cookiesData = {
-                userID: user[0].UserID,
-                userRole: user[0].UserRole,
-            };
+            const cookiesData = { userID: user[0].UserID, userRole: user[0].UserRole };
+
             const token = jwt.encode(cookiesData, process.env.SECRET);
 
             res.cookie('weblearningtoken', token, {
@@ -126,9 +124,9 @@ exports.userLogout = async (req, res) => {
     try {
         res.clearCookie('weblearningtoken')
         console.log(`out`)
-        return res.send({ continueWork: false, isLogin: false }).status(httpCodes.OK)
+        return res.status(httpCodes.OK).send({ continueWork: false, isLogin: false })
     } catch (error) {
         console.error('UserCont.js line:132 function userLogout', error);
-        return res.send({ message: "Server Feiled, try again" }).status(httpCodes.SERVER_ERROR)
+        return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
     }
 }

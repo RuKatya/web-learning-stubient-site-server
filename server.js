@@ -2,10 +2,10 @@ const { connectionToENV } = require('./utils/connectionToENV');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-
+const userMiddleware = require('./middleware/user')
 const app = express();
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 9595;
 const HOST = process.env.HOST || 'localhost';
 const CORS_OPTIONS = {
     origin: process.env.CORS_URL || 3000,
@@ -14,6 +14,7 @@ const CORS_OPTIONS = {
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors(CORS_OPTIONS));
+app.use(userMiddleware)
 
 app.set('view engine', 'ejs') //connecting ejs
 console.log(app.get('view engine'))
