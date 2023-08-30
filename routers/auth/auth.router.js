@@ -3,6 +3,7 @@ const {
     loginUser,
     userLogout
 } = require('../../controllers/auth/auth.controller');
+const userRole = require('../../middleware/user.role');
 
 const router = require('express').Router();
 

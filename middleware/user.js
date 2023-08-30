@@ -2,27 +2,28 @@ const jwt = require('jwt-simple');
 const { httpCodes } = require('../utils/httpStatusCode');
 
 module.exports = async (req, res, next) => {
-    const { weblearningtoken } = req.cookies
+    try {
+        const { weblearningtoken } = req.cookies
 
-    if (!weblearningtoken) {
-        return next()
-    }
-
-    const { userID } = await jwt.decode(weblearningtoken, process.env.SECRET)
-
-    const userSearch = `SELECT Email, UserName, UserID FROM users WHERE userID=${userID}`
-
-    db.query(userSearch, (err, result) => {
-        if (err) {
-            console.error(`user middleware sql error: ${err.sqlMessage}`);
-            return res
-                .status(httpCodes.REQUEST_CONFLICT)
-                .send({ continueWork: false, message: err.sqlMessage });
+        if (!weblearningtoken) {
+            return next()
         }
 
-        // console.log(result)
-        req.user = result[0]
+        const { userID } = await jwt.decode(weblearningtoken, process.env.SECRET)
 
-        next()
-    })
+        const userSearch = `SELECT Email, UserName, UserID, UserRole FROM users WHERE userID=${userID}`
+
+        db.query(userSearch, (err, result) => {
+            if (err) {
+                console.error(`user middleware sql error: ${err.sqlMessage}`);
+                return res.status(httpCodes.REQUEST_CONFLICT).send({ continueWork: false, message: err.sqlMessage });
+            }
+
+            req.user = result[0]
+
+            next()
+        })
+    } catch (error) {
+        console.log(error)
+    }
 }
