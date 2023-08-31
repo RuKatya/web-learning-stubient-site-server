@@ -25,6 +25,7 @@ global.db = require('./utils/connectionDB');
 
 app.use('/auth', require('./routers/auth/auth.router'));
 app.use('/user', require('./routers/user/user.router'));
+app.use('/dashboard', require('./routers/dashboard/subjects.rout'))
 
 // Handle 500
 app.use(function (error, req, res, next) {
