@@ -2,7 +2,7 @@ const { connectionToENV } = require('./utils/connectionToENV');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const userMiddleware = require('./middleware/user')
+const userMiddleware = require('./middleware/user.login')
 const app = express();
 
 const PORT = process.env.PORT || 9595;

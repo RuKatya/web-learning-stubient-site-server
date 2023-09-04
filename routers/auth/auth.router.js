@@ -1,9 +1,9 @@
 const {
     regUser,
     loginUser,
-    userLogout
+    userLogout,
+    checkUserCookies
 } = require('../../controllers/auth/auth.controller');
-const userRole = require('../../middleware/user.role');
 
 const router = require('express').Router();
 
@@ -11,5 +11,6 @@ router
     .post("/login-user", loginUser)
     .post("/save-user", regUser)
     .get("/user-logout", userLogout)
+    .get('/user-checking', checkUserCookies)
 
 module.exports = router;

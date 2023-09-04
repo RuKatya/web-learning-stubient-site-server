@@ -30,6 +30,7 @@ exports.regUser = async (req, res) => {
             res.status(httpCodes.OK).send({ continueWork: true, message: 'User Saved' });
         });
     } catch (error) {
+        console.log(`auth.controllers.js error regUser`)
         console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: 'Server Feiled, try again' })
     }
@@ -79,10 +80,35 @@ exports.loginUser = async (req, res) => {
             });
         });
     } catch (error) {
+        console.log(`auth.controllers.js error loginUser`)
         console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: 'Server Feiled, try again' });
     }
 };
+
+exports.checkUserCookies = async (req, res) => {
+    try {
+        const user = req.user
+        console.log(user)
+
+        const cookiesData = { userID: user.UserID, userRole: user.UserRole };
+
+        const token = jwt.encode(cookiesData, process.env.SECRET);
+
+        res.cookie('weblearningtoken', token, { maxAge: 1000 * 60 * 60 * 3, httpOnly: true });
+        res.status(httpCodes.OK).send({
+            continueWork: true,
+            isLogin: true,
+            message: 'User Login',
+            userName: user.UserName,
+            userRole: user.UserRole,
+        });
+    } catch (error) {
+        console.log(`auth.controllers.js error checkUserCookies`)
+        console.error(error);
+        return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, isLogin: false, message: "Login Please" })
+    }
+}
 
 exports.userLogout = async (req, res) => {
     try {
@@ -90,7 +116,7 @@ exports.userLogout = async (req, res) => {
         console.log(`out`)
         return res.status(httpCodes.OK).send({ continueWork: false, isLogin: false })
     } catch (error) {
-        console.error('UserCont.js line:132 function userLogout', error);
-        return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
+        console.log(`auth.controllers.js error userLogout`)
+        console.error(error); return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
     }
 }
