@@ -55,7 +55,7 @@ exports.loginUser = async (req, res) => {
             }
 
             if (user.length == 0) {
-                console.log('`auth.js loginUser User not exist');
+                console.log('auth.js loginUser User not exist');
                 return res.status(httpCodes.NOT_FOUND).send({ continueWork: false, message: 'User not exist' });
             }
 
@@ -89,7 +89,9 @@ exports.loginUser = async (req, res) => {
 exports.checkUserCookies = async (req, res) => {
     try {
         const user = req.user
-        console.log(user)
+        // console.log(user)
+
+        if (!user) return res.status(httpCodes.NOT_FOUND).send({ continueWork: false, message: 'User not loggined' });
 
         const cookiesData = { userID: user.UserID, userRole: user.UserRole };
 
@@ -106,7 +108,7 @@ exports.checkUserCookies = async (req, res) => {
     } catch (error) {
         console.log(`auth.controllers.js error checkUserCookies`)
         console.error(error);
-        return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, isLogin: false, message: "Login Please" })
+        return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, isLogin: false, message: "Server Feiled, try again" })
     }
 }
 

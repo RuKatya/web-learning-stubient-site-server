@@ -3,23 +3,16 @@ const { httpCodes } = require("../../utils/httpStatusCode")
 exports.getAllSubjects = async (req, res) => {
     try {
         // ---- Get All Subjects For Admin---- //
-        exports.getAllSubjects = async (req, res) => {
-            try {
-                const query = `SELECT * FROM subjects;`
+        const query = `SELECT * FROM subjects;`
 
-                db.query(query, (err, subjects) => {
-                    if (err) {
-                        console.error('SubjectsCont.js line:47 sql error getAllSubjects', err.sqlMessage);
-                        return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, message: err.sqlMessage })
-                    }
-
-                    return res.status(httpCodes.OK).send({ continueWork: true, subjects })
-                })
-            } catch (error) {
-                console.error('SubjectsCont.js line:56 function getAllSubjects', error);
-                return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
+        db.query(query, (err, subjects) => {
+            if (err) {
+                console.error('SubjectsCont.js line:47 sql error getAllSubjects', err.sqlMessage);
+                return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, message: err.sqlMessage })
             }
-        }
+
+            return res.status(httpCodes.OK).send({ continueWork: true, subjects })
+        })
     } catch (error) {
         console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: 'Server Feiled, try again' })

@@ -3,6 +3,7 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const userMiddleware = require('./middleware/user.login')
+const roleMiddleware = require('./middleware/user.role')
 const app = express();
 
 const PORT = process.env.PORT || 9595;
@@ -25,7 +26,7 @@ global.db = require('./utils/connectionDB');
 
 app.use('/auth', require('./routers/auth/auth.router'));
 app.use('/user', require('./routers/user/user.router'));
-app.use('/dashboard', require('./routers/dashboard/subjects.rout'))
+app.use('/dashboard', roleMiddleware, require('./routers/dashboard'))
 
 // Handle 500
 app.use(function (error, req, res, next) {
