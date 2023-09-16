@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
         }
 
         const { userID } = await jwt.decode(weblearningtoken, process.env.SECRET)
-
         const userSearch = `SELECT Email, UserName, UserID, UserRole FROM users WHERE userID=${userID}`
 
         db.query(userSearch, (err, result) => {
@@ -21,9 +20,11 @@ module.exports = async (req, res, next) => {
 
             req.user = result[0]
 
-            next()
+            return next()
         })
     } catch (error) {
-        console.log(error)
+        console.log(`user.login.js error userLoginMiddlware`)
+        console.error(error);
+        return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, isLogin: false, message: "Server Feiled, try again" })
     }
 }

@@ -19,7 +19,6 @@ app.use(userMiddleware)
 
 app.set('view engine', 'ejs') //connecting ejs
 console.log(app.get('view engine'))
-// app.set('views', path.resolve(__dirname, 'ejs'))
 
 connectionToENV();
 global.db = require('./utils/connectionDB');
