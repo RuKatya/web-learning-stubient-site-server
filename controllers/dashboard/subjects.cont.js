@@ -1,5 +1,5 @@
 const { httpCodes } = require("../../utils/httpStatusCode");
-const { newNameValidation } = require("../../validation/dashboard.validation");
+const { subjectNameValidation } = require("../../validation/dashboard.validation");
 
 // ---- Get All Subjects For Admin---- //
 exports.getAllSubjects = async (req, res) => {
@@ -8,13 +8,14 @@ exports.getAllSubjects = async (req, res) => {
 
         db.query(query, (err, subjects) => {
             if (err) {
-                console.error('SubjectsCont.js line:47 sql error getAllSubjects', err.sqlMessage);
-                return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, message: err.sqlMessage })
+                console.error('subject.cont.js line:47 sql error getAllSubjects', err.sqlMessage);
+                return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, message: "Something went wrong..." })
             }
 
             return res.status(httpCodes.OK).send({ continueWork: true, subjects })
         })
     } catch (error) {
+        console.log(`subject.cont.js getAllSubjects server error`)
         console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: 'Server Feiled, try again' })
     }
@@ -25,7 +26,7 @@ exports.saveNewSubject = (req, res) => {
     try {
         const { newName } = req.body
 
-        const { error } = newNameValidation.validate({ newName })
+        const { error } = subjectNameValidation.validate({ newName })
 
         if (error) {
             console.error('SubjectsCont.js line:13 validation error of saveNewSubject:', error.message)
@@ -37,7 +38,7 @@ exports.saveNewSubject = (req, res) => {
         db.query(query, (err, result) => {
             if (err) {
                 console.error('SubjectsCont.js line:21 sql error saveNewSubject', err.sqlMessage);
-                return res.status(httpCodes.REQUEST_CONFLICT).send({ continueWork: false, message: err.sqlMessage })
+                return res.status(httpCodes.REQUEST_CONFLICT).send({ continueWork: false, message: "Something went wrong..." })
             }
 
             return res
@@ -50,7 +51,8 @@ exports.saveNewSubject = (req, res) => {
                 })
         })
     } catch (error) {
-        console.error('SubjectsCont.js line:35 function saveNewSubject', error);
+        console.log(`subject.cont.js saveNewSubject server error`)
+        console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
     }
 }
@@ -65,7 +67,7 @@ exports.removeSubject = async (req, res) => {
         db.query(deleteQuery, (err, result) => {
             if (err) {
                 console.error('SubjectsCont.js line:107 sql error removeSubject', err.sqlMessage);
-                return res.status(httpCodes.BAD_REQUEST).send({ continueWork: false, message: err.sqlMessage })
+                return res.status(httpCodes.BAD_REQUEST).send({ continueWork: false, message: "Something went wrong..." })
             }
 
             // res.send("deleted")
@@ -75,7 +77,7 @@ exports.removeSubject = async (req, res) => {
             db.query(deleteAllTitles, (err, deletedQuestions) => {
                 if (err) {
                     console.error('TitleConst.js line:115 sql error removeSubject', err.sqlMessage);
-                    return res.status(httpCodes.BAD_REQUEST).send({ continueWork: false, message: err.sqlMessage })
+                    return res.status(httpCodes.BAD_REQUEST).send({ continueWork: false, message: "Something went wrong..." })
                 }
 
                 const deleteAllQuestions = `DELETE FROM title_qustions WHERE SubjectID=${id}`
@@ -83,7 +85,7 @@ exports.removeSubject = async (req, res) => {
                 db.query(deleteAllQuestions, (err, deletedQuestions) => {
                     if (err) {
                         console.error('TitleConst.js line:123 sql error removeSubject', err.sqlMessage);
-                        return res.status(httpCodes.BAD_REQUEST).send({ continueWork: false, message: err.sqlMessage })
+                        return res.status(httpCodes.BAD_REQUEST).send({ continueWork: false, message: "Something went wrong..." })
                     }
 
                     return res
@@ -93,7 +95,8 @@ exports.removeSubject = async (req, res) => {
             })
         })
     } catch (error) {
-        console.error('SubjectsCont.js line:134 function removeSubject', error);
+        console.log(`subject.cont.js removeSubject server error`)
+        console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
     }
 }
@@ -103,7 +106,7 @@ exports.updateSubject = async (req, res) => {
     try {
         const { id, newName } = req.body
 
-        const { error } = newNameValidation.validate({ newName })
+        const { error } = subjectNameValidation.validate({ newName })
 
         if (error) {
             console.error('SubjectsCont.js line:109 validation error of updateSubject:', error.message)
@@ -115,7 +118,7 @@ exports.updateSubject = async (req, res) => {
         db.query(updateQuery, (err, result) => {
             if (err) {
                 console.error('SubjectsCont.js line:77 sql error updateSubject', err.sqlMessage);
-                return res.status(httpCodes.BAD_REQUEST).send({ continueWork: false, message: err.sqlMessage })
+                return res.status(httpCodes.BAD_REQUEST).send({ continueWork: false, message: "Something went wrong..." })
             }
 
             return res
@@ -123,7 +126,8 @@ exports.updateSubject = async (req, res) => {
                 .send({ continueWork: true, id, SubjectName, message: "Subject Updated" })
         })
     } catch (error) {
-        console.error('SubjectsCont.js line:86 function updateSubject', error);
+        console.log(`subject.cont.js updateSubject server error`)
+        console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
     }
 }
