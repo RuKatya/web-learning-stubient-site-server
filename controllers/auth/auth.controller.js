@@ -24,7 +24,7 @@ exports.regUser = async (req, res) => {
         db.query(saveUser, err => {
             if (err) {
                 console.error(`auth.js regUser sql error: ${err.sqlMessage}`);
-                return res.status(httpCodes.REQUEST_CONFLICT).send({ continueWork: false, message: err.sqlMessage });
+                return res.status(httpCodes.REQUEST_CONFLICT).send({ continueWork: false, message: "Something went wrong..." });
             }
 
             res.status(httpCodes.OK).send({ continueWork: true, message: 'User Saved' });
@@ -51,7 +51,7 @@ exports.loginUser = async (req, res) => {
         db.query(searchUser, async (err, user) => {
             if (err) {
                 console.error(`auth.js loginUser sql error: ${err.sqlMessage}`);
-                return res.status(httpCodes.REQUEST_CONFLICT).send({ continueWork: false, message: err.sqlMessage });
+                return res.status(httpCodes.REQUEST_CONFLICT).send({ continueWork: false, message: "Something went wrong..." });
             }
 
             if (user.length == 0) {
@@ -80,7 +80,7 @@ exports.loginUser = async (req, res) => {
             });
         });
     } catch (error) {
-        console.log(`auth.controllers.js error loginUser`)
+        console.log(`auth.js loginUser server error`)
         console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: 'Server Feiled, try again' });
     }
@@ -105,7 +105,7 @@ exports.checkUserCookies = async (req, res) => {
             userRole: user.UserRole,
         });
     } catch (error) {
-        console.log(`auth.controllers.js error checkUserCookies`)
+        console.log(`auth.js checkUserCookies server error`)
         console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, isLogin: false, message: "Server Feiled, try again" })
     }
@@ -117,7 +117,7 @@ exports.userLogout = async (req, res) => {
         console.log(`out`)
         return res.status(httpCodes.OK).send({ continueWork: false, isLogin: false })
     } catch (error) {
-        console.log(`auth.controllers.js error userLogout`)
+        console.log(`auth.js userLogout server error`)
         console.error(error); return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
     }
 }
