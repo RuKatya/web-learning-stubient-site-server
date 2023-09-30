@@ -7,4 +7,3 @@ const newName = Joi.string().min(2).max(25).required().messages({
 });
 
 exports.newNameValidation = Joi.object({ newName });
-exports.updateNameValidation = Joi.object({ newName });
