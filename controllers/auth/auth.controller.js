@@ -89,7 +89,6 @@ exports.loginUser = async (req, res) => {
 exports.checkUserCookies = async (req, res) => {
     try {
         const user = req.user
-        // console.log(user)
 
         if (!user) return res.status(httpCodes.NOT_FOUND).send({ continueWork: false, message: 'User not loggined' });
 

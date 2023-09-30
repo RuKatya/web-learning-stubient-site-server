@@ -1,8 +1,9 @@
-const { httpCodes } = require("../../utils/httpStatusCode")
+const { httpCodes } = require("../../utils/httpStatusCode");
+const { newNameValidation } = require("../../validation/dashboard.validation");
 
+// ---- Get All Subjects For Admin---- //
 exports.getAllSubjects = async (req, res) => {
     try {
-        // ---- Get All Subjects For Admin---- //
         const query = `SELECT * FROM subjects;`
 
         db.query(query, (err, subjects) => {
@@ -22,16 +23,16 @@ exports.getAllSubjects = async (req, res) => {
 // ---- Save New Subject ---- //
 exports.saveNewSubject = (req, res) => {
     try {
-        const { SubjectName } = req.body
+        const { newName } = req.body
 
-        // const { error } = subjectNameValidation.validate({ SubjectName })
+        const { error } = newNameValidation.validate({ newName })
 
-        // if (error) {
-        //     console.error('SubjectsCont.js line:13 validation error of saveNewSubject:', error.message)
-        //     return res.status(httpCodes.FORBIDDEN).send({ continueWork: false, message: error.message })
-        // }
+        if (error) {
+            console.error('SubjectsCont.js line:13 validation error of saveNewSubject:', error.message)
+            return res.status(httpCodes.FORBIDDEN).send({ continueWork: false, message: error.message })
+        }
 
-        const query = `INSERT INTO subjects (subjectName) VALUES ("${SubjectName}")`
+        const query = `INSERT INTO subjects (subjectName) VALUES ("${newName}")`
 
         db.query(query, (err, result) => {
             if (err) {
@@ -45,7 +46,7 @@ exports.saveNewSubject = (req, res) => {
                     continueWork: true,
                     message: "Subject Saved",
                     SubjectID: result.insertId,
-                    SubjectName
+                    newName
                 })
         })
     } catch (error) {
@@ -60,13 +61,6 @@ exports.removeSubject = async (req, res) => {
         const { id } = req.body
 
         const deleteQuery = `DELETE FROM subjects WHERE SubjectID=${id} `
-
-        // const { error } = deleteValidation.validate({ id })
-
-        // if (error) {
-        //     console.log('SubjectsCont.js line:101 validation error of removeSubject:', error.message);
-        //     return res.status(httpCodes.FORBIDDEN).send({ continueWork: false, message: error.message })
-        // }
 
         db.query(deleteQuery, (err, result) => {
             if (err) {
@@ -107,16 +101,16 @@ exports.removeSubject = async (req, res) => {
 // ---- Update Subject ---- //
 exports.updateSubject = async (req, res) => {
     try {
-        const { id, SubjectName } = req.body
+        const { id, newName } = req.body
 
-        // const { error } = updateSubjectValidation.validate({ id, SubjectName })
+        const { error } = newNameValidation.validate({ newName })
 
-        // if (error) {
-        //     console.error('SubjectsCont.js line:69 validation error of updateSubject:', error.message)
-        //     return res.status(httpCodes.FORBIDDEN).send({ continueWork: false, message: error.message })
-        // }
+        if (error) {
+            console.error('SubjectsCont.js line:109 validation error of updateSubject:', error.message)
+            return res.status(httpCodes.FORBIDDEN).send({ continueWork: false, message: error.message })
+        }
 
-        const updateQuery = `UPDATE subjects SET subjectName='${SubjectName}' WHERE SubjectID=${id}`
+        const updateQuery = `UPDATE subjects SET subjectName='${newName}' WHERE SubjectID=${id}`
 
         db.query(updateQuery, (err, result) => {
             if (err) {
