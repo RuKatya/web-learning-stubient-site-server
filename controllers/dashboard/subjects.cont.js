@@ -8,7 +8,7 @@ exports.getAllSubjects = async (req, res) => {
 
         db.query(query, (err, subjects) => {
             if (err) {
-                console.error('subject.cont.js line:47 sql error getAllSubjects', err.sqlMessage);
+                console.error('subject.cont.js sql error getAllSubjects', err.sqlMessage);
                 return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, message: "Something went wrong..." })
             }
 
