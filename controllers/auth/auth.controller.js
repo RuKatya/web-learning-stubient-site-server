@@ -30,9 +30,9 @@ exports.regUser = async (req, res) => {
             res.status(httpCodes.OK).send({ continueWork: true, message: 'User Saved' });
         });
     } catch (error) {
-        console.log(`auth.controllers.js error regUser`)
+        console.log(`auth.controllers.js error regUser`);
         console.error(error);
-        return res.status(httpCodes.SERVER_ERROR).send({ message: 'Server Feiled, try again' })
+        return res.status(httpCodes.SERVER_ERROR).send({ message: 'Server Feiled, try again' });
     }
 };
 
@@ -54,7 +54,7 @@ exports.loginUser = async (req, res) => {
                 return res.status(httpCodes.REQUEST_CONFLICT).send({ continueWork: false, message: "Something went wrong..." });
             }
 
-            if (user.length == 0) {
+            if (user.length === 0) {
                 console.log('auth.js loginUser User not exist');
                 return res.status(httpCodes.NOT_FOUND).send({ continueWork: false, message: 'User not exist' });
             }
@@ -65,8 +65,9 @@ exports.loginUser = async (req, res) => {
                 console.log(`auth.js loginUser Password not correct`);
                 return res.status(httpCodes.UNAUTHORIZED).send({ continueWork: false, message: 'Password not correct' });
             }
+            const { UserID, UserRole, UserName } = user[0];
 
-            const cookiesData = { userID: user[0].UserID, userRole: user[0].UserRole };
+            const cookiesData = { userID: UserID, userRole: UserRole };
 
             const token = jwt.encode(cookiesData, process.env.SECRET);
 
@@ -75,12 +76,12 @@ exports.loginUser = async (req, res) => {
                 continueWork: true,
                 isLogin: true,
                 message: 'User Login',
-                userName: user[0].UserName,
-                userRole: user[0].UserRole,
+                userName: UserName,
+                userRole: UserRole,
             });
         });
     } catch (error) {
-        console.log(`auth.js loginUser server error`)
+        console.log(`auth.js loginUser server error`);
         console.error(error);
         return res.status(httpCodes.SERVER_ERROR).send({ message: 'Server Feiled, try again' });
     }
@@ -88,11 +89,13 @@ exports.loginUser = async (req, res) => {
 
 exports.checkUserCookies = async (req, res) => {
     try {
-        const user = req.user
+        const { user } = req;
 
         if (!user) return res.status(httpCodes.NOT_FOUND).send({ continueWork: false, message: 'User not loggined' });
 
-        const cookiesData = { userID: user.UserID, userRole: user.UserRole };
+        const { UserID, UserName, UserRole } = user;
+        
+        const cookiesData = { userID: UserID, userRole: UserRole };
 
         const token = jwt.encode(cookiesData, process.env.SECRET);
 
@@ -101,23 +104,23 @@ exports.checkUserCookies = async (req, res) => {
             continueWork: true,
             isLogin: true,
             message: 'User Login',
-            userName: user.UserName,
-            userRole: user.UserRole,
+            userName: UserName,
+            userRole: UserRole,
         });
     } catch (error) {
-        console.log(`auth.js checkUserCookies server error`)
+        console.log(`auth.js checkUserCookies server error`);
         console.error(error);
-        return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, isLogin: false, message: "Server Feiled, try again" })
+        return res.status(httpCodes.SERVER_ERROR).send({ continueWork: false, isLogin: false, message: "Server Feiled, try again" });
     }
 }
 
 exports.userLogout = async (req, res) => {
     try {
-        res.clearCookie('weblearningtoken')
-        console.log(`out`)
-        return res.status(httpCodes.OK).send({ continueWork: false, isLogin: false })
+        res.clearCookie('weblearningtoken');
+        console.log(`out`);
+        return res.status(httpCodes.OK).send({ continueWork: false, isLogin: false });
     } catch (error) {
-        console.log(`auth.js userLogout server error`)
-        console.error(error); return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" })
+        console.log(`auth.js userLogout server error`);
+        console.error(error); return res.status(httpCodes.SERVER_ERROR).send({ message: "Server Feiled, try again" });
     }
 }

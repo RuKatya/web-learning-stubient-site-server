@@ -10,6 +10,7 @@ const PORT = process.env.PORT || 9595;
 const HOST = process.env.HOST || 'localhost';
 const CORS_OPTIONS = {
     origin: process.env.CORS_URL || 3000,
+    credentials: true,
 };
 
 app.use(express.json());
