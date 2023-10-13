@@ -4,7 +4,7 @@ const { newNameValidation } = require("../../validation/dashboard.validation");
 // ---- Get All Titles By Subject Id ---- //
 exports.getAllTitles = async (req, res) => {
     try {
-        const { SubjectID } = req.body
+        const { subject: { SubjectID } } = req
 
         const query = `SELECT * FROM titles_quizes WHERE SubjectID = ${SubjectID}`
 

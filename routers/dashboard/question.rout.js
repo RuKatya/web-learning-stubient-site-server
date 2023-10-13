@@ -6,7 +6,7 @@ router
     .post('/save-new-questions', saveNewQuestions)              // Save New Questions of Title
     .patch('/update-question', updateQuestion)                  // Update Question
     .delete('/delete-question', deleteQuestion)                 // Remove Question
-    .delete('/delete-question', deleteQuestion)                 // Remove Question
+    // .delete('/delete-question', deleteQuestion)                 // Remove Question
     .delete('/delete-many-question', deleteManyQuestions)       // Remove many questions
 
 module.exports = router;

@@ -10,7 +10,7 @@ const router = require('express').Router();
 router
     .post("/login-user", loginUser)
     .post("/save-user", regUser)
-    .get("/user-logout", userLogout)
-    .get('/user-checking', checkUserCookies)
+    .get("/logout-user", userLogout)
+    .get('/check-user', checkUserCookies)
 
 module.exports = router;
