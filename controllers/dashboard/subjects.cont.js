@@ -1,5 +1,6 @@
 const { httpCodes } = require("../../utils/httpStatusCode");
-const { subjectNameValidation } = require("../../validation/dashboard.validation");
+const { newNameValidation } = require("../../validation/dashboard.validation");
+// const { subjectNameValidation } = require("../../validation/dashboard.validation");
 
 // ---- Get All Subjects For Admin---- //
 exports.getAllSubjects = async (req, res) => {
@@ -26,7 +27,7 @@ exports.saveNewSubject = (req, res) => {
     try {
         const { newName } = req.body
 
-        const { error } = subjectNameValidation.validate({ newName })
+        const { error } = newNameValidation.validate({ newName })
 
         if (error) {
             console.error('SubjectsCont.js line:13 validation error of saveNewSubject:', error.message)
@@ -106,7 +107,7 @@ exports.updateSubject = async (req, res) => {
     try {
         const { id, newName } = req.body
 
-        const { error } = subjectNameValidation.validate({ newName })
+        const { error } = newNameValidation.validate({ newName })
 
         if (error) {
             console.error('SubjectsCont.js line:109 validation error of updateSubject:', error.message)
